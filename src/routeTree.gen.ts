@@ -10,32 +10,72 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TabsRouteImport } from './routes/_tabs'
+import { Route as TabsIndexRouteImport } from './routes/_tabs.index'
+import { Route as TabsParqueRouteImport } from './routes/_tabs.parque'
+import { Route as TabsInfoRouteImport } from './routes/_tabs.info'
+import { Route as TabsChecklistRouteImport } from './routes/_tabs.checklist'
 
 const TabsRoute = TabsRouteImport.update({
   id: '/_tabs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TabsIndexRoute = TabsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsParqueRoute = TabsParqueRouteImport.update({
+  id: '/parque',
+  path: '/parque',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsInfoRoute = TabsInfoRouteImport.update({
+  id: '/info',
+  path: '/info',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsChecklistRoute = TabsChecklistRouteImport.update({
+  id: '/checklist',
+  path: '/checklist',
+  getParentRoute: () => TabsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof TabsRoute
+  '/': typeof TabsIndexRoute
+  '/checklist': typeof TabsChecklistRoute
+  '/info': typeof TabsInfoRoute
+  '/parque': typeof TabsParqueRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof TabsRoute
+  '/checklist': typeof TabsChecklistRoute
+  '/info': typeof TabsInfoRoute
+  '/parque': typeof TabsParqueRoute
+  '/': typeof TabsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_tabs': typeof TabsRoute
+  '/_tabs': typeof TabsRouteWithChildren
+  '/_tabs/checklist': typeof TabsChecklistRoute
+  '/_tabs/info': typeof TabsInfoRoute
+  '/_tabs/parque': typeof TabsParqueRoute
+  '/_tabs/': typeof TabsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/checklist' | '/info' | '/parque'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_tabs'
+  to: '/checklist' | '/info' | '/parque' | '/'
+  id:
+    | '__root__'
+    | '/_tabs'
+    | '/_tabs/checklist'
+    | '/_tabs/info'
+    | '/_tabs/parque'
+    | '/_tabs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  TabsRoute: typeof TabsRoute
+  TabsRoute: typeof TabsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -47,11 +87,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TabsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs/': {
+      id: '/_tabs/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof TabsIndexRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/parque': {
+      id: '/_tabs/parque'
+      path: '/parque'
+      fullPath: '/parque'
+      preLoaderRoute: typeof TabsParqueRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/info': {
+      id: '/_tabs/info'
+      path: '/info'
+      fullPath: '/info'
+      preLoaderRoute: typeof TabsInfoRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/checklist': {
+      id: '/_tabs/checklist'
+      path: '/checklist'
+      fullPath: '/checklist'
+      preLoaderRoute: typeof TabsChecklistRouteImport
+      parentRoute: typeof TabsRoute
+    }
   }
 }
 
+interface TabsRouteChildren {
+  TabsChecklistRoute: typeof TabsChecklistRoute
+  TabsInfoRoute: typeof TabsInfoRoute
+  TabsParqueRoute: typeof TabsParqueRoute
+  TabsIndexRoute: typeof TabsIndexRoute
+}
+
+const TabsRouteChildren: TabsRouteChildren = {
+  TabsChecklistRoute: TabsChecklistRoute,
+  TabsInfoRoute: TabsInfoRoute,
+  TabsParqueRoute: TabsParqueRoute,
+  TabsIndexRoute: TabsIndexRoute,
+}
+
+const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  TabsRoute: TabsRoute,
+  TabsRoute: TabsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
