@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as TabsIndexRouteImport } from './routes/_tabs.index'
 import { Route as TabsParqueRouteImport } from './routes/_tabs.parque'
 import { Route as TabsInfoRouteImport } from './routes/_tabs.info'
 import { Route as TabsChecklistRouteImport } from './routes/_tabs.checklist'
 
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TabsRoute = TabsRouteImport.update({
   id: '/_tabs',
   getParentRoute: () => rootRouteImport,
@@ -42,11 +48,13 @@ const TabsChecklistRoute = TabsChecklistRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof TabsIndexRoute
+  '/admin': typeof AdminRoute
   '/checklist': typeof TabsChecklistRoute
   '/info': typeof TabsInfoRoute
   '/parque': typeof TabsParqueRoute
 }
 export interface FileRoutesByTo {
+  '/admin': typeof AdminRoute
   '/checklist': typeof TabsChecklistRoute
   '/info': typeof TabsInfoRoute
   '/parque': typeof TabsParqueRoute
@@ -55,6 +63,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_tabs': typeof TabsRouteWithChildren
+  '/admin': typeof AdminRoute
   '/_tabs/checklist': typeof TabsChecklistRoute
   '/_tabs/info': typeof TabsInfoRoute
   '/_tabs/parque': typeof TabsParqueRoute
@@ -62,12 +71,13 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/checklist' | '/info' | '/parque'
+  fullPaths: '/' | '/admin' | '/checklist' | '/info' | '/parque'
   fileRoutesByTo: FileRoutesByTo
-  to: '/checklist' | '/info' | '/parque' | '/'
+  to: '/admin' | '/checklist' | '/info' | '/parque' | '/'
   id:
     | '__root__'
     | '/_tabs'
+    | '/admin'
     | '/_tabs/checklist'
     | '/_tabs/info'
     | '/_tabs/parque'
@@ -76,10 +86,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   TabsRoute: typeof TabsRouteWithChildren
+  AdminRoute: typeof AdminRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_tabs': {
       id: '/_tabs'
       path: ''
@@ -136,6 +154,7 @@ const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   TabsRoute: TabsRouteWithChildren,
+  AdminRoute: AdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
