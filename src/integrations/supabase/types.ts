@@ -14,7 +14,264 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attractions: {
+        Row: {
+          area: string | null
+          coords: string | null
+          created_at: string
+          duration: string | null
+          estimated_wait: string | null
+          id: string
+          lightning_lane: boolean
+          must_do: boolean
+          name: string
+          park_id: string
+          position: number
+          strategy_tip: string | null
+          type: string | null
+        }
+        Insert: {
+          area?: string | null
+          coords?: string | null
+          created_at?: string
+          duration?: string | null
+          estimated_wait?: string | null
+          id?: string
+          lightning_lane?: boolean
+          must_do?: boolean
+          name: string
+          park_id: string
+          position?: number
+          strategy_tip?: string | null
+          type?: string | null
+        }
+        Update: {
+          area?: string | null
+          coords?: string | null
+          created_at?: string
+          duration?: string | null
+          estimated_wait?: string | null
+          id?: string
+          lightning_lane?: boolean
+          must_do?: boolean
+          name?: string
+          park_id?: string
+          position?: number
+          strategy_tip?: string | null
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attractions_park_id_fkey"
+            columns: ["park_id"]
+            isOneToOne: false
+            referencedRelation: "parks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      checklist_items: {
+        Row: {
+          assignee: string | null
+          category: string | null
+          created_at: string
+          deadline: string | null
+          id: string
+          resolution: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assignee?: string | null
+          category?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          resolution?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assignee?: string | null
+          category?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          resolution?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      days: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          park_id: string | null
+          position: number
+          title: string
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          park_id?: string | null
+          position?: number
+          title: string
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          park_id?: string | null
+          position?: number
+          title?: string
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "days_park_id_fkey"
+            columns: ["park_id"]
+            isOneToOne: false
+            referencedRelation: "parks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itinerary_steps: {
+        Row: {
+          attraction_id: string | null
+          created_at: string
+          day_id: string
+          id: string
+          is_key_moment: boolean
+          label: string
+          note: string | null
+          position: number
+          time: string | null
+        }
+        Insert: {
+          attraction_id?: string | null
+          created_at?: string
+          day_id: string
+          id?: string
+          is_key_moment?: boolean
+          label: string
+          note?: string | null
+          position?: number
+          time?: string | null
+        }
+        Update: {
+          attraction_id?: string | null
+          created_at?: string
+          day_id?: string
+          id?: string
+          is_key_moment?: boolean
+          label?: string
+          note?: string | null
+          position?: number
+          time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itinerary_steps_attraction_id_fkey"
+            columns: ["attraction_id"]
+            isOneToOne: false
+            referencedRelation: "attractions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itinerary_steps_day_id_fkey"
+            columns: ["day_id"]
+            isOneToOne: false
+            referencedRelation: "days"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parks: {
+        Row: {
+          address: string | null
+          arrival_tip: string | null
+          created_at: string
+          hours: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          address?: string | null
+          arrival_tip?: string | null
+          created_at?: string
+          hours?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          address?: string | null
+          arrival_tip?: string | null
+          created_at?: string
+          hours?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      timeline_items: {
+        Row: {
+          coords: string | null
+          created_at: string
+          day_id: string
+          id: string
+          label: string
+          maps_query: string | null
+          note: string | null
+          position: number
+          star: boolean
+          time: string | null
+          warn: boolean
+        }
+        Insert: {
+          coords?: string | null
+          created_at?: string
+          day_id: string
+          id?: string
+          label: string
+          maps_query?: string | null
+          note?: string | null
+          position?: number
+          star?: boolean
+          time?: string | null
+          warn?: boolean
+        }
+        Update: {
+          coords?: string | null
+          created_at?: string
+          day_id?: string
+          id?: string
+          label?: string
+          maps_query?: string | null
+          note?: string | null
+          position?: number
+          star?: boolean
+          time?: string | null
+          warn?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timeline_items_day_id_fkey"
+            columns: ["day_id"]
+            isOneToOne: false
+            referencedRelation: "days"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
