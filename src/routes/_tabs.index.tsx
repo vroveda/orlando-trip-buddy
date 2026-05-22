@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDayShort, formatDayLong, todayISO } from "@/lib/date";
 import { fetchOrlandoWeather, weatherEmoji, weatherLabel } from "@/lib/weather";
-import { Star, AlertTriangle, MapPin, Trophy } from "lucide-react";
+import { Star, AlertTriangle, MapPin, Trophy, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/_tabs/")({
   component: RoteiroPage,
@@ -62,18 +62,19 @@ function RoteiroPage() {
         </div>
       )}
 
-      <div className="space-y-6">
+      <div className="space-y-3">
         {days?.map((day: any, idx: number) => {
           const isToday = day.date === today;
           const items = (day.timeline_items ?? []).slice().sort((a: any, b: any) => a.position - b.position);
           const ds = formatDayShort(day.date);
           return (
-            <section
+            <details
               key={day.id}
-              className={`rounded-2xl border bg-card ${isToday ? "border-primary shadow-[0_0_0_1px_var(--primary)]" : "border-border"}`}
+              open={isToday}
+              className={`group rounded-2xl border bg-card overflow-hidden ${isToday ? "border-primary shadow-[0_0_0_1px_var(--primary)]" : "border-border"}`}
             >
-              <div className="flex items-center gap-4 p-4 border-b border-border">
-                <div className="w-14 h-14 rounded-xl bg-secondary flex flex-col items-center justify-center">
+              <summary className="flex items-center gap-4 p-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <div className="w-14 h-14 rounded-xl bg-secondary flex flex-col items-center justify-center shrink-0">
                   <span className="text-[10px] uppercase text-muted-foreground">{ds.month}</span>
                   <span className="text-xl font-bold leading-none">{ds.day}</span>
                 </div>
@@ -89,12 +90,13 @@ function RoteiroPage() {
                     </p>
                   )}
                 </div>
-              </div>
+                <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 transition-transform group-open:rotate-180" />
+              </summary>
 
               {items.length > 0 && (
-                <ol className="p-4 space-y-3">
+                <ol className="p-4 pt-0 space-y-3 border-t border-border mt-0">
                   {items.map((it: any) => (
-                    <li key={it.id} className="flex gap-3">
+                    <li key={it.id} className="flex gap-3 pt-3 first:pt-4">
                       <div className="w-14 shrink-0 text-xs font-mono text-primary pt-0.5">{it.time || "—"}</div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5">
@@ -118,7 +120,7 @@ function RoteiroPage() {
                   ))}
                 </ol>
               )}
-            </section>
+            </details>
           );
         })}
       </div>
