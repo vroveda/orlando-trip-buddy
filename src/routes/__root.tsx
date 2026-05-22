@@ -76,10 +76,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "App da viagem do grupo para Orlando — Copa do Mundo 2026" },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "Orlando World Cup 2026" },
-      { property: "og:description", content: "Roteiro, parques e checklist da galera em Orlando" },
+      { property: "og:description", content: "App da viagem do grupo para Orlando — Copa do Mundo 2026" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Orlando World Cup 2026" },
+      { name: "twitter:description", content: "App da viagem do grupo para Orlando — Copa do Mundo 2026" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a7f6ea8a-9bb9-4bbb-af1e-e1ae58778df5/id-preview-763b47d6--8f0acbab-baa4-4654-b09f-0599011936c0.lovable.app-1779403637721.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a7f6ea8a-9bb9-4bbb-af1e-e1ae58778df5/id-preview-763b47d6--8f0acbab-baa4-4654-b09f-0599011936c0.lovable.app-1779403637721.png" },
     ],
     links: [
       {
