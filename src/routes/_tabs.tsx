@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Calendar, MapPin, CheckSquare, Info } from "lucide-react";
+import { Calendar, CalendarDays, CheckSquare, Info } from "lucide-react";
 
 export const Route = createFileRoute("/_tabs")({
   component: TabsLayout,
@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_tabs")({
 
 const tabs = [
   { to: "/", label: "Roteiro", icon: Calendar },
-  { to: "/parque", label: "Parque", icon: MapPin },
+  { to: "/parque", label: "Hoje", icon: CalendarDays },
   { to: "/checklist", label: "Checklist", icon: CheckSquare },
   { to: "/info", label: "Info", icon: Info },
 ] as const;
